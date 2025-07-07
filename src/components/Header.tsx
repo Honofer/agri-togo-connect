@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Leaf, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { toast } = useToast();
 
   return (
     <header className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b border-border">
@@ -34,7 +36,16 @@ const Header = () => {
             <a href="#financement" className="text-foreground hover:text-primary transition-colors">
               Financement
             </a>
-            <Button variant="default" size="sm">
+            <Button 
+              variant="default" 
+              size="sm"
+              onClick={() => {
+                toast({
+                  title: "Connexion",
+                  description: "Fonctionnalité de connexion bientôt disponible ! Vous pourrez créer votre compte agriculteur.",
+                });
+              }}
+            >
               Connexion
             </Button>
           </nav>
@@ -71,7 +82,17 @@ const Header = () => {
               <a href="#financement" className="text-foreground hover:text-primary transition-colors">
                 Financement
               </a>
-              <Button variant="default" size="sm" className="w-fit">
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="w-fit"
+                onClick={() => {
+                  toast({
+                    title: "Connexion",
+                    description: "Fonctionnalité de connexion bientôt disponible ! Vous pourrez créer votre compte agriculteur.",
+                  });
+                }}
+              >
                 Connexion
               </Button>
             </nav>

@@ -1,7 +1,9 @@
 import { Leaf, Mail, Phone, MapPin, Facebook, Twitter, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const Footer = () => {
+  const { toast } = useToast();
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-16">
@@ -94,7 +96,15 @@ const Footer = () => {
                 placeholder="Votre adresse email"
                 className="flex-1 px-4 py-2 rounded-md bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-accent"
               />
-              <Button variant="terracotta">
+              <Button 
+                variant="terracotta"
+                onClick={() => {
+                  toast({
+                    title: "Inscription Newsletter",
+                    description: "Merci pour votre inscription ! Vous recevrez bientôt nos actualités agricoles et les meilleures offres du marché.",
+                  });
+                }}
+              >
                 S'Abonner
               </Button>
             </div>

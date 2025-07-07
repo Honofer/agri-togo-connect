@@ -1,8 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Droplets, Sun, Sprout, Users, TrendingUp } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const AdviceSection = () => {
+  const { toast } = useToast();
   const adviceCards = [
     {
       icon: Droplets,
@@ -84,7 +86,17 @@ const AdviceSection = () => {
                   </ul>
                 </div>
                 
-                <Button variant="outline" size="sm" className="w-full mt-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full mt-4"
+                  onClick={() => {
+                    toast({
+                      title: `Guide: ${advice.title}`,
+                      description: `Découvrez nos conseils détaillés sur ${advice.title.toLowerCase()}. Guide complet bientôt disponible !`,
+                    });
+                  }}
+                >
                   En Savoir Plus
                 </Button>
               </CardContent>
@@ -104,10 +116,26 @@ const AdviceSection = () => {
                 la saison sèche au Togo. Des méthodes éprouvées par nos agriculteurs partenaires.
               </p>
               <div className="flex space-x-4">
-                <Button variant="success">
+                <Button 
+                  variant="success"
+                  onClick={() => {
+                    toast({
+                      title: "Article du Mois",
+                      description: "Téléchargement de l'article sur la culture du maïs en saison sèche... Fonctionnalité bientôt disponible !",
+                    });
+                  }}
+                >
                   Lire l'Article
                 </Button>
-                <Button variant="outline">
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    toast({
+                      title: "Guide PDF",
+                      description: "Téléchargement du guide PDF en cours... Fonctionnalité bientôt disponible !",
+                    });
+                  }}
+                >
                   Télécharger PDF
                 </Button>
               </div>

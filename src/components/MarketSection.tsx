@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Star, Phone } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const MarketSection = () => {
+  const { toast } = useToast();
   const products = [
     {
       id: 1,
@@ -124,10 +126,29 @@ const MarketSection = () => {
               </CardContent>
               
               <CardFooter className="flex space-x-2">
-                <Button variant="default" size="sm" className="flex-1">
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => {
+                    toast({
+                      title: `Commande de ${product.name}`,
+                      description: `Vous voulez acheter ${product.name} de ${product.seller}. Fonctionnalité de commande bientôt disponible !`,
+                    });
+                  }}
+                >
                   Acheter
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    toast({
+                      title: "Contacter le vendeur",
+                      description: `Numéro de téléphone de ${product.seller}: +228 XX XX XX XX`,
+                    });
+                  }}
+                >
                   <Phone className="h-4 w-4" />
                 </Button>
               </CardFooter>
@@ -137,7 +158,16 @@ const MarketSection = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <Button variant="hero" size="lg">
+          <Button 
+            variant="hero" 
+            size="lg"
+            onClick={() => {
+              toast({
+                title: "Plus de produits",
+                description: "Fonctionnalité de recherche avancée bientôt disponible ! Vous pourrez filtrer par région, prix et type de produits.",
+              });
+            }}
+          >
             Voir Plus de Produits
           </Button>
         </div>

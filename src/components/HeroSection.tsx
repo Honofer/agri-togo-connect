@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, ShoppingCart, BookOpen } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-agriculture-togo.jpg";
 
 const HeroSection = () => {
+  const { toast } = useToast();
   return (
     <section id="accueil" className="relative min-h-screen flex items-center justify-center bg-gradient-hero">
       {/* Background Image with Overlay */}
@@ -28,11 +30,30 @@ const HeroSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button variant="hero" size="lg" className="text-lg px-8 py-4">
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="text-lg px-8 py-4"
+            onClick={() => {
+              toast({
+                title: "Bienvenue sur AgriConnect Togo !",
+                description: "Nous vous aidons à connecter votre agriculture au monde. Explorez nos services.",
+              });
+              // Scroll to market section
+              document.getElementById('marche')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
             Commencer Maintenant
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
-          <Button variant="outline" size="lg" className="text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20"
+            onClick={() => {
+              document.getElementById('marche')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
             Découvrir le Marché
           </Button>
         </div>
