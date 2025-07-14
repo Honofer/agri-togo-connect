@@ -1,48 +1,119 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Droplets, Sun, Sprout, Users, TrendingUp } from "lucide-react";
+import { BookOpen, Droplets, Sun, Sprout, Users, TrendingUp, Download, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
+
+interface Article {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  type: string;
+  author_name: string;
+  category_name: string;
+  views_count: number;
+  pdf_url?: string;
+  image_url?: string;
+  created_at: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+}
 
 const AdviceSection = () => {
   const { toast } = useToast();
-  const adviceCards = [
-    {
-      icon: Droplets,
-      title: "Gestion de l'Eau",
-      description: "Techniques d'irrigation efficaces pour maximiser vos rendements même en saison sèche.",
-      tips: ["Irrigation goutte à goutte", "Conservation de l'eau de pluie", "Calendrier d'arrosage optimal"]
-    },
-    {
-      icon: Sprout,
-      title: "Préparation du Sol",
-      description: "Comment préparer et enrichir votre sol pour des cultures plus productives.",
-      tips: ["Compostage naturel", "Rotation des cultures", "Test de pH du sol"]
-    },
-    {
-      icon: Sun,
-      title: "Météo et Saisons",
-      description: "Adapter vos cultures aux conditions climatiques du Togo pour un meilleur succès.",
-      tips: ["Calendrier de plantation", "Protection contre les intempéries", "Prévisions météo locales"]
-    },
-    {
-      icon: TrendingUp,
-      title: "Augmenter les Rendements",
-      description: "Stratégies éprouvées pour améliorer la productivité de vos cultures.",
-      tips: ["Sélection de semences", "Fertilisation organique", "Contrôle des nuisibles"]
-    },
-    {
-      icon: Users,
-      title: "Coopératives Agricoles",
-      description: "L'importance de rejoindre une coopérative pour partager les ressources et connaissances.",
-      tips: ["Avantages du regroupement", "Négociation de prix", "Partage d'équipements"]
-    },
-    {
-      icon: BookOpen,
-      title: "Formation Continue",
-      description: "Ressources pour apprendre de nouvelles techniques agricoles modernes.",
-      tips: ["Ateliers pratiques", "Formations en ligne", "Échanges entre agriculteurs"]
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const getCategoryIcon = (categoryName: string) => {
+    const icons: { [key: string]: any } = {
+      'Culture des Céréales': Sprout,
+      'Maraîchage': Droplets,
+      'Élevage': Users,
+      'Gestion des Sols': Sun,
+      'Protection des Cultures': TrendingUp,
+      'Techniques Modernes': BookOpen
+    };
+    return icons[categoryName] || BookOpen;
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      // Récupérer les catégories
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('article_categories')
+        .select('*')
+        .order('name');
+
+      if (categoriesError) throw categoriesError;
+
+      // Récupérer les articles
+      const { data: articlesData, error: articlesError } = await supabase
+        .from('articles')
+        .select(`
+          *,
+          profiles!author_id (
+            full_name
+          ),
+          article_categories (
+            name
+          )
+        `)
+        .eq('is_published', true)
+        .order('created_at', { ascending: false })
+        .limit(6);
+
+      if (articlesError) throw articlesError;
+
+      const formattedArticles = articlesData?.map(article => ({
+        id: article.id,
+        title: article.title,
+        excerpt: article.excerpt || '',
+        content: article.content,
+        type: article.type,
+        author_name: article.profiles?.full_name || 'Auteur anonyme',
+        category_name: article.article_categories?.name || 'Non catégorisé',
+        views_count: article.views_count || 0,
+        pdf_url: article.pdf_url,
+        image_url: article.image_url,
+        created_at: article.created_at
+      })) || [];
+
+      setCategories(categoriesData || []);
+      setArticles(formattedArticles);
+      if (formattedArticles.length > 0) {
+        setFeaturedArticle(formattedArticles[0]);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des données:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les conseils. Veuillez réessayer.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const handleArticleView = async (articleId: string) => {
+    try {
+      await supabase.rpc('increment_article_views', { article_id: articleId });
+    } catch (error) {
+      console.error('Erreur lors de l\'incrémentation des vues:', error);
+    }
+  };
 
   return (
     <section id="conseils" className="py-20 bg-muted/30">
