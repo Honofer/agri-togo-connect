@@ -90,6 +90,7 @@ const Auth = () => {
             emailRedirectTo: redirectUrl,
             data: {
               full_name: data.fullName || "",
+              role: data.role || "buyer",
             },
           },
         });

@@ -50,6 +50,13 @@ const Header = () => {
             </a>
             {user ? (
               <div className="flex items-center space-x-3">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Tableau de bord
+                </Button>
                 <div className="flex items-center space-x-2 text-sm">
                   <User className="h-4 w-4" />
                   <span className="text-foreground">
@@ -110,6 +117,14 @@ const Header = () => {
               </a>
               {user ? (
                 <div className="flex flex-col space-y-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="w-fit justify-start"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    Tableau de bord
+                  </Button>
                   <div className="flex items-center space-x-2 text-sm">
                     <User className="h-4 w-4" />
                     <span className="text-foreground">

@@ -11,6 +11,7 @@ import ArticlesList from "./pages/ArticlesList";
 import ProductDetail from "./pages/ProductDetail";
 import CreditApplication from "./pages/CreditApplication";
 import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/articles" element={<ArticlesList />} />
             <Route path="/articles/:id" element={<ArticleDetail />} />
             <Route path="/products/:id" element={<ProductDetail />} />
