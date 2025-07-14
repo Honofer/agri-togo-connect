@@ -129,96 +129,148 @@ const AdviceSection = () => {
           </p>
         </div>
 
-        {/* Advice Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {adviceCards.map((advice, index) => (
-            <Card key={index} className="bg-card shadow-soft hover:shadow-glow transition-all duration-300 hover:scale-105">
-              <CardHeader className="text-center pb-4">
-                <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
-                  <advice.icon className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="text-xl mb-3">{advice.title}</CardTitle>
-              </CardHeader>
+        {/* Categories Cards Grid */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {[...Array(6)].map((_, i) => (
+              <Card key={i} className="bg-card shadow-soft">
+                <CardHeader className="text-center pb-4">
+                  <div className="animate-pulse">
+                    <div className="h-16 w-16 bg-muted rounded-full mx-auto mb-4"></div>
+                    <div className="h-6 bg-muted rounded mb-2"></div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="animate-pulse space-y-2">
+                    <div className="h-4 bg-muted rounded"></div>
+                    <div className="h-4 bg-muted rounded"></div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {categories.map((category) => {
+              const IconComponent = getCategoryIcon(category.name);
+              const categoryArticles = articles.filter(article => article.category_name === category.name);
               
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground text-center">
-                  {advice.description}
-                </p>
-                
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-sm text-foreground">Points clés :</h4>
-                  <ul className="space-y-1">
-                    {advice.tips.map((tip, tipIndex) => (
-                      <li key={tipIndex} className="text-sm text-muted-foreground flex items-start">
-                        <span className="text-primary mr-2">•</span>
-                        {tip}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full mt-4"
-                  onClick={() => {
-                    toast({
-                      title: `Guide: ${advice.title}`,
-                      description: `Découvrez nos conseils détaillés sur ${advice.title.toLowerCase()}. Guide complet bientôt disponible !`,
-                    });
-                  }}
-                >
-                  En Savoir Plus
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+              return (
+                <Card key={category.id} className="bg-card shadow-soft hover:shadow-glow transition-all duration-300 hover:scale-105">
+                  <CardHeader className="text-center pb-4">
+                    <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
+                      <IconComponent className="h-8 w-8 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl mb-3">{category.name}</CardTitle>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    <p className="text-muted-foreground text-center">
+                      {category.description}
+                    </p>
+                    
+                    {categoryArticles.length > 0 && (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-sm text-foreground">Articles récents :</h4>
+                        <ul className="space-y-1">
+                          {categoryArticles.slice(0, 3).map((article) => (
+                            <li key={article.id} className="text-sm text-muted-foreground flex items-start">
+                              <span className="text-primary mr-2">•</span>
+                              <span className="truncate">{article.title}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full mt-4"
+                      onClick={() => {
+                        toast({
+                          title: `Catégorie: ${category.name}`,
+                          description: `Découvrez ${categoryArticles.length} article(s) dans cette catégorie.`,
+                        });
+                      }}
+                    >
+                      Voir les Articles ({categoryArticles.length})
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
 
         {/* Featured Article */}
-        <div className="bg-gradient-card rounded-lg p-8 shadow-soft">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">
-                Article du Mois : Culture du Maïs en Saison Sèche
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                Découvrez les techniques innovantes pour cultiver le maïs même pendant 
-                la saison sèche au Togo. Des méthodes éprouvées par nos agriculteurs partenaires.
-              </p>
-              <div className="flex space-x-4">
-                <Button 
-                  variant="success"
-                  onClick={() => {
-                    toast({
-                      title: "Article du Mois",
-                      description: "Téléchargement de l'article sur la culture du maïs en saison sèche... Fonctionnalité bientôt disponible !",
-                    });
-                  }}
-                >
-                  Lire l'Article
-                </Button>
-                <Button 
-                  variant="outline"
-                  onClick={() => {
-                    toast({
-                      title: "Guide PDF",
-                      description: "Téléchargement du guide PDF en cours... Fonctionnalité bientôt disponible !",
-                    });
-                  }}
-                >
-                  Télécharger PDF
-                </Button>
+        {featuredArticle && (
+          <div className="bg-gradient-card rounded-lg p-8 shadow-soft">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">
+                  Article du Mois : {featuredArticle.title}
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  {featuredArticle.excerpt}
+                </p>
+                <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-6">
+                  <span>Par {featuredArticle.author_name}</span>
+                  <span>•</span>
+                  <span className="flex items-center">
+                    <Eye className="h-4 w-4 mr-1" />
+                    {featuredArticle.views_count} vues
+                  </span>
+                </div>
+                <div className="flex space-x-4">
+                  <Button 
+                    variant="success"
+                    onClick={() => {
+                      handleArticleView(featuredArticle.id);
+                      toast({
+                        title: "Article du Mois",
+                        description: `Lecture de "${featuredArticle.title}"`,
+                      });
+                    }}
+                  >
+                    Lire l'Article
+                  </Button>
+                  {featuredArticle.pdf_url && (
+                    <Button 
+                      variant="outline"
+                      onClick={() => {
+                        window.open(featuredArticle.pdf_url, '_blank');
+                        toast({
+                          title: "Téléchargement PDF",
+                          description: "Ouverture du guide PDF...",
+                        });
+                      }}
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Télécharger PDF
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <div className="text-center">
+                {featuredArticle.image_url ? (
+                  <img 
+                    src={featuredArticle.image_url} 
+                    alt={featuredArticle.title}
+                    className="w-full max-w-sm mx-auto rounded-lg shadow-soft"
+                  />
+                ) : (
+                  <>
+                    <div className="text-8xl mb-4">📚</div>
+                    <p className="text-sm text-muted-foreground">
+                      Guide complet avec illustrations
+                    </p>
+                  </>
+                )}
               </div>
             </div>
-            <div className="text-center">
-              <div className="text-8xl mb-4">📚</div>
-              <p className="text-sm text-muted-foreground">
-                Guide complet avec illustrations
-              </p>
-            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

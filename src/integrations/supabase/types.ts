@@ -662,7 +662,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_article_views: {
+        Args: { article_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       article_type: "guide" | "conseil" | "actualite"
