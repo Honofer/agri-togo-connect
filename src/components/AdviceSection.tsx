@@ -188,10 +188,7 @@ const AdviceSection = () => {
                       size="sm" 
                       className="w-full mt-4"
                       onClick={() => {
-                        toast({
-                          title: `Catégorie: ${category.name}`,
-                          description: `Découvrez ${categoryArticles.length} article(s) dans cette catégorie.`,
-                        });
+                        window.location.href = '/articles';
                       }}
                     >
                       Voir les Articles ({categoryArticles.length})
@@ -227,10 +224,7 @@ const AdviceSection = () => {
                     variant="success"
                     onClick={() => {
                       handleArticleView(featuredArticle.id);
-                      toast({
-                        title: "Article du Mois",
-                        description: `Lecture de "${featuredArticle.title}"`,
-                      });
+                      window.location.href = `/articles/${featuredArticle.id}`;
                     }}
                   >
                     Lire l'Article

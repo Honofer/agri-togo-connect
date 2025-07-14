@@ -254,7 +254,7 @@ const WeatherSection = () => {
               onClick={() => {
                 toast({
                   title: "Alertes Météo",
-                  description: "Inscription aux alertes météo confirmée ! Vous recevrez des notifications importantes.",
+                  description: "Inscription aux alertes météo confirmée ! Vous recevrez des notifications importantes par SMS et email.",
                 });
               }}
             >

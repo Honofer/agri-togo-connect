@@ -193,22 +193,16 @@ const MarketSection = () => {
                     size="sm" 
                     className="flex-1"
                     onClick={() => {
-                      toast({
-                        title: `Commande de ${product.name}`,
-                        description: `Vous voulez acheter ${product.name} de ${product.seller_name}. Fonctionnalité de commande bientôt disponible !`,
-                      });
+                      window.location.href = `/products/${product.id}`;
                     }}
                   >
-                    Acheter
+                    Voir Détails
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={() => {
-                      toast({
-                        title: "Contacter le vendeur",
-                        description: `Contactez ${product.seller_name} pour plus d'informations sur ce produit.`,
-                      });
+                      window.location.href = `/products/${product.id}`;
                     }}
                   >
                     <Phone className="h-4 w-4" />
@@ -225,9 +219,14 @@ const MarketSection = () => {
             variant="hero" 
             size="lg"
             onClick={() => {
+              // Pour l'instant, on scroll vers le haut de la section marché
+              const marketSection = document.getElementById('marche');
+              if (marketSection) {
+                marketSection.scrollIntoView({ behavior: 'smooth' });
+              }
               toast({
-                title: "Plus de produits",
-                description: "Fonctionnalité de recherche avancée bientôt disponible ! Vous pourrez filtrer par région, prix et type de produits.",
+                title: "Catalogue Complet",
+                description: "Tous les produits sont déjà affichés ci-dessus !",
               });
             }}
           >

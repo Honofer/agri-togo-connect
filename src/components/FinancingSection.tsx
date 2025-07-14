@@ -188,13 +188,10 @@ const FinancingSection = () => {
                         size="sm" 
                         className="w-full"
                         onClick={() => {
-                          toast({
-                            title: `Contact ${institution.name}`,
-                            description: `Vous souhaitez contacter ${institution.name}. Un conseiller vous rappellera bientôt !`,
-                          });
+                          window.location.href = '/credit-application';
                         }}
                       >
-                        Demander Informations
+                        Demander un Crédit
                       </Button>
                     </CardContent>
                   </Card>
@@ -263,13 +260,10 @@ const FinancingSection = () => {
             <Button 
               variant="outline"
               onClick={() => {
-                toast({
-                  title: "Guide PDF",
-                  description: "Téléchargement du guide de gestion financière agricole en cours... Fonctionnalité bientôt disponible !",
-                });
+                window.location.href = '/credit-application';
               }}
             >
-              Télécharger Guide PDF
+              Demander un Crédit
             </Button>
           </div>
         </div>

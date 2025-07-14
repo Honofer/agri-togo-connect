@@ -21,20 +21,20 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#accueil" className="text-foreground hover:text-primary transition-colors">
+            <a href="/" className="text-foreground hover:text-primary transition-colors">
               Accueil
             </a>
             <a href="#marche" className="text-foreground hover:text-primary transition-colors">
               Marché
             </a>
-            <a href="#conseils" className="text-foreground hover:text-primary transition-colors">
-              Conseils
+            <a href="/articles" className="text-foreground hover:text-primary transition-colors">
+              Articles
             </a>
             <a href="#meteo" className="text-foreground hover:text-primary transition-colors">
               Météo
             </a>
-            <a href="#financement" className="text-foreground hover:text-primary transition-colors">
-              Financement
+            <a href="/credit-application" className="text-foreground hover:text-primary transition-colors">
+              Crédit
             </a>
             <Button 
               variant="default" 
