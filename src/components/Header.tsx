@@ -1,11 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { Leaf, Menu, X } from "lucide-react";
+import { Leaf, Menu, X, LogOut, User } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Déconnexion",
+      description: "Vous avez été déconnecté avec succès",
+    });
+  };
 
   return (
     <header className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b border-border">
@@ -36,18 +48,32 @@ const Header = () => {
             <a href="/credit-application" className="text-foreground hover:text-primary transition-colors">
               Crédit
             </a>
-            <Button 
-              variant="default" 
-              size="sm"
-              onClick={() => {
-                toast({
-                  title: "Connexion",
-                  description: "Fonctionnalité de connexion bientôt disponible ! Vous pourrez créer votre compte agriculteur.",
-                });
-              }}
-            >
-              Connexion
-            </Button>
+            {user ? (
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 text-sm">
+                  <User className="h-4 w-4" />
+                  <span className="text-foreground">
+                    {user.email}
+                  </span>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Déconnexion
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                variant="default" 
+                size="sm"
+                onClick={() => navigate("/auth")}
+              >
+                Connexion
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -82,19 +108,34 @@ const Header = () => {
               <a href="#financement" className="text-foreground hover:text-primary transition-colors">
                 Financement
               </a>
-              <Button 
-                variant="default" 
-                size="sm" 
-                className="w-fit"
-                onClick={() => {
-                  toast({
-                    title: "Connexion",
-                    description: "Fonctionnalité de connexion bientôt disponible ! Vous pourrez créer votre compte agriculteur.",
-                  });
-                }}
-              >
-                Connexion
-              </Button>
+              {user ? (
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center space-x-2 text-sm">
+                    <User className="h-4 w-4" />
+                    <span className="text-foreground">
+                      {user.email}
+                    </span>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="w-fit"
+                    onClick={handleSignOut}
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Déconnexion
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="w-fit"
+                  onClick={() => navigate("/auth")}
+                >
+                  Connexion
+                </Button>
+              )}
             </nav>
           </div>
         )}
