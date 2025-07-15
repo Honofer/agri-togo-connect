@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Package, ShoppingCart, FileText, Users } from "lucide-react";
+import { PlusCircle, Package, ShoppingCart, FileText, Users, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface UserProfile {
@@ -256,7 +256,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button 
                     className="h-auto p-6 flex flex-col items-center gap-2"
-                    onClick={() => {/* TODO: Ajouter navigation vers création produit */}}
+                    onClick={() => navigate("/products/create")}
                   >
                     <PlusCircle className="h-8 w-8" />
                     <span>Ajouter un produit</span>
@@ -264,7 +264,7 @@ const Dashboard = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-6 flex flex-col items-center gap-2"
-                    onClick={() => {/* TODO: Ajouter navigation vers liste produits */}}
+                    onClick={() => navigate("/products")}
                   >
                     <Package className="h-8 w-8" />
                     <span>Gérer mes produits</span>
@@ -297,7 +297,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button 
                     className="h-auto p-6 flex flex-col items-center gap-2"
-                    onClick={() => {/* TODO: Ajouter navigation vers création article */}}
+                    onClick={() => navigate("/articles/create")}
                   >
                     <PlusCircle className="h-8 w-8" />
                     <span>Écrire un article</span>
@@ -305,10 +305,10 @@ const Dashboard = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-6 flex flex-col items-center gap-2"
-                    onClick={() => navigate("/credit")}
+                    onClick={() => navigate("/settings")}
                   >
-                    <FileText className="h-8 w-8" />
-                    <span>Demande de crédit</span>
+                    <User className="h-8 w-8" />
+                    <span>Paramètres du compte</span>
                   </Button>
                 </div>
               </TabsContent>
